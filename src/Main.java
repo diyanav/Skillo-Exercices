@@ -56,6 +56,7 @@ public class Main {
         Scanner min = new Scanner(System.in);
         //one year has 525600 minutes
 
+        System.out.println("Enter minutes: ");
         int minutes = min.nextInt();
 
         int minutesToYears = minutes / 60 / 24 / 365;
