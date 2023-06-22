@@ -1,7 +1,6 @@
 package lab3;
-import java.util.Scanner;
 
-public class examples {
+public class Examples {
     public static void main(String[] args) {
         //testArithmeticOperations();
         //testAutoOperations();

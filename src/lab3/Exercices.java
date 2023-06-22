@@ -1,7 +1,7 @@
 package lab3;
 import java.util.Scanner;
 
-public class exercices {
+public class Exercices {
     public static void main(String[] args) {
         //triangleByAngles();
         //printDayOfWeek();

@@ -2,7 +2,7 @@ package lab4;
 
 import java.util.*;
 
-public class examples {
+public class Examples {
     public static void main(String[] args) {
 
     //testArrayDeclarationElementInit();
