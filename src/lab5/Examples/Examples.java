@@ -22,7 +22,6 @@ public class Examples {
         Animal animal = new Animal();
         animal.displayInfo();
         */
-
     }
 
     public static void testMethod(){
