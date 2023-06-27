@@ -1,4 +1,4 @@
-package lab6.Exercices;
+package lab6.Exercices.Constructors;
 
 public class Car {
     private String name;
