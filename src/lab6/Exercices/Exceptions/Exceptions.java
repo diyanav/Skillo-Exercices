@@ -21,5 +21,4 @@ public class Exceptions {
             System.out.println("Arithmetic exception found!");
         }
     }
-
 }

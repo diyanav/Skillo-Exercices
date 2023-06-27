@@ -25,3 +25,4 @@ public class FixCode {
         printToFile(getFileWriter(filePath), textToAdd, howManyTimesToPrintTheTextToFile);
     }
 }
+
