@@ -1,9 +1,8 @@
-package lab6;
+package lab6.Examples;
 
 public class Employee {
 
     public static void main(String[] args) {
-        //System.out.println("QA Automation course.");
 
     }
 
@@ -22,8 +21,10 @@ public class Employee {
     }
 
     public Employee(String firstName, String lastName){
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this(firstName, lastName, -1);
     }
 
+    public void printInfo() {
+        System.out.println("First name: " + firstName + ", Last name: " + lastName + ", birth year: " + birthYear);
+    }
 }
