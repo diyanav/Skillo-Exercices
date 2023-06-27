@@ -16,15 +16,15 @@ public class Car {
     }
 
     public Car(String name, String color, boolean secondHand) {
-        this(name, color, false);
+        this(name, color, -1, -1, secondHand);
     }
 
     public Car(String name, String color, int releaseYear, int horsePower) {
-        this(name, "N/A", releaseYear, -1);
+        this(name, color, releaseYear, horsePower, false);
     }
 
     public Car(String name, int releaseYear, int horsePower, boolean secondHand) {
-        this(name, -1, horsePower, secondHand);
+        this(name, "N/A", releaseYear, horsePower, secondHand);
     }
 
     public Car() {
