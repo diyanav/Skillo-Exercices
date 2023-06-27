@@ -11,3 +11,4 @@ public class Vehicle {
         System.out.println("Creating vehicle.");
     }
 }
+

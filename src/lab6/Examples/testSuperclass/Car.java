@@ -14,3 +14,4 @@ public class Car extends Vehicle {
         this.brand = brand;
     }
 }
+
