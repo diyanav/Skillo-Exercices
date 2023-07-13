@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="Lecture 10 Exercises suite" verbose="1" parallel="methods" thread-count="4">
+    <test name="Lecture 10 Exercises">
+        <classes>
+            <class name="lecture_10.exercises.Exercises"/>
+        </classes>
+    </test>
+</suite>
