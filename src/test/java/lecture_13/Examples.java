@@ -2,72 +2,163 @@ package lecture_13;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
+
+import java.time.Duration;
+import java.util.Random;
 
 public class Examples {
 
-    @Test
-    public void testLogin() {
+    private WebDriver driver;
+
+    @BeforeSuite
+    public final void setupTestSuite(){
         WebDriverManager.chromedriver().setup();
-        ChromeDriver driver = new ChromeDriver();
+        //WebDriverManager.safaridriver().setup();
+    }
+
+    @BeforeMethod
+    public final void setupTest(){
+        driver = new ChromeDriver();
         driver.manage().window().maximize();
 
-        //open the skillo test web site
-        driver.get("http://training.skillo-bg.com:4200/posts/all");
+        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(20));
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+    }
+
+    @AfterMethod
+    public final void tearDownTest(){
+        if(this.driver != null) {
+            driver.close();
+        }
+    }
+
+    @DataProvider(name = "generateUserData")
+    public Object[][] generateUserData(){
+        return new Object[][]{
+                {"test.user-1234", "test.user-1234"}
+        };
+    }
+
+    @Test(dataProvider = "generateUserData")
+    public void testLogin(String userName, String password) {
+
+        //open the skillo test website
+        driver.get("http://training.skillo-bg.com:4300/posts/all");
 
         //open Login form
         WebElement loginLink = driver.findElement(By.id("nav-link-login"));
         loginLink.click();
 
-        //verify the URL
-        String expectedLoginPageUrl = "http://training.skillo-bg.com:4200/users/login";
-        String actualLoginPageUrl = driver.getCurrentUrl();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.urlToBe("http://training.skillo-bg.com:4300/users/login"));
 
-        Assert.assertEquals(actualLoginPageUrl, expectedLoginPageUrl, "Login page URL is incorrect!");
-
-        //verify the Sign In form
-        WebElement signInElement = driver.findElement(By.className("h4"));
-        String expectedSignInText = "Sign In";
-        String actualSignInText = signInElement.getText();
-        Assert.assertEquals(actualSignInText, expectedSignInText, "Sign In form is incorrect!");
+        //verify the SignIn form
+        WebElement signInElement = driver. findElement (By.xpath ( "//p[text()='Sign in']"));
+        wait.until(ExpectedConditions.visibilityOf(signInElement));
 
         //type username
-        WebElement userName = driver.findElement(By.id("defaultLoginFormUsername"));
-        userName.sendKeys("test.user-1234");
+        WebElement userNameField = driver.findElement(By.id("defaultLoginFormUsername"));
+        userNameField.sendKeys(userName);
 
         //type password
-        WebElement password = driver.findElement(By.id("defaultLoginFormPassword"));
-        password.sendKeys("test.user-1234");
+        WebElement passwordField = driver.findElement(By.id("defaultLoginFormPassword"));
+        passwordField.sendKeys(password);
 
-        //click Sign In button
-        WebElement signInButton = driver.findElement(By.id("sign-in-button"));
-        Assert.assertTrue(signInButton.isEnabled(), "Sign In button is disabled!");
+        WebElement signInButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("sign-in-button")));
         signInButton.click();
 
         //verify home page url
-        String expectedHomePageUrl = "http://training.skillo-bg.com:4200/posts/all";
-        String actualHomePageUrl = driver.getCurrentUrl();
-        Assert.assertEquals(actualHomePageUrl, expectedHomePageUrl, "Home page URL is incorrect!");
+        wait.until(ExpectedConditions.urlToBe("http://training.skillo-bg.com:4300/posts/all"));
 
         //open Profile page
-        WebElement profileLink = driver.findElement(By.id("nav-link-profile"));
-        Assert.assertTrue(profileLink.isDisplayed());
+        WebElement profileLink = wait.until(ExpectedConditions.elementToBeClickable(By.id("nav-link-profile")));
         profileLink.click();
 
         //verify profile URL
-        String expectedProfilePageUrl = "http://training.skillo-bg.com:4200/users/4615";
-        String actualProfilePageUrl = driver.getCurrentUrl();
-        Assert.assertEquals(actualProfilePageUrl, expectedProfilePageUrl, "Profile page URL is incorrect!");
+        wait.until(ExpectedConditions.urlContains("http://training.skillo-bg.com:4300/users/"));
 
         //verify user name in profile
-        WebElement userNameElement = driver.findElement(By.tagName("h2"));
-        String actualUserNameElement = userNameElement.getText();
-        String expectedUserNameElement = "user.name-1234";
-        Assert.assertEquals(actualUserNameElement, expectedUserNameElement, "User name is incorrect!");
-
-        driver.close();
+        Boolean isUserNameDisplayed = wait.until(ExpectedConditions.textToBe(By.tagName("h2"), userName));
+        Assert.assertTrue(isUserNameDisplayed, "The user name is not displayed!");
     }
+
+    @Test
+    public void testRegistration(){
+        driver.get("http://training.skillo-bg.com:4300/posts/all");
+        WebElement loginLink = driver.findElement(By.id("nav-link-login"));
+        loginLink.click();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.urlToBe("http://training.skillo-bg.com:4300/users/login"));
+
+        //verify the SignIn form
+        WebElement signInElement = driver. findElement (By.xpath ( "//p[text()='Sign in']"));
+        wait.until(ExpectedConditions.visibilityOf(signInElement));
+
+        WebElement registerLink = driver.findElement(By.linkText("Register"));
+        registerLink.click();
+
+        wait.until(ExpectedConditions.urlToBe("http://training.skillo-bg.com:4300/users/register"));
+
+        WebElement signUpLabel = driver.findElement(By.xpath("//*[text() = 'Sign up']"));
+        wait.until(ExpectedConditions.visibilityOf(signUpLabel));
+
+        String username = generateUsername();
+        WebElement usernameElement = driver.findElement(By.name("username"));
+        usernameElement.sendKeys(username);
+
+        String email = username + "@email.com";
+        WebElement emailElement = driver.findElement((By.cssSelector("input[type='email']")));
+        emailElement.sendKeys(email);
+
+        String birthDate = generateBirthDate();
+        WebElement birthDateElement = driver.findElement((By.cssSelector("input[type='date']")));
+        birthDateElement.sendKeys(birthDate);
+
+        String password = generatePassword();
+        WebElement passwordElement = driver.findElement((By.name("password")));
+        passwordElement.sendKeys(password);
+        
+        WebElement confirmPasswordElement = driver.findElement((By.name("verify-password")));
+        confirmPasswordElement.sendKeys(password);
+
+        WebElement publicInfoElement = driver.findElement((By.name("pulic-info")));
+        publicInfoElement.sendKeys("test");
+
+        WebElement signInButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("sign-in-button")));
+        signInButton.click();
+
+        wait.until(ExpectedConditions.urlToBe("http://training.skillo-bg.com:4300/posts/all"));
+
+        WebElement profileLink = wait.until(ExpectedConditions.elementToBeClickable(By.id("nav-link-profile")));
+        profileLink.click();
+
+        wait.until(ExpectedConditions.urlContains("http://training.skillo-bg.com:4300/users/"));
+
+        Boolean isUserNameDisplayed = wait.until(ExpectedConditions.textToBe(By.tagName("h2"), username));
+        Assert.assertTrue(isUserNameDisplayed, "The user name is not displayed!");
+    }
+
+    private String generateUsername() {
+        int randomNumber = new Random().nextInt(999999);
+        return "test.user-" + String.format("%06d", randomNumber);
+    }
+
+    private String generateBirthDate(){
+
+        return "20121999";
+    }
+    private String generatePassword(){
+
+        return "Random1";
+    }
+
 }
