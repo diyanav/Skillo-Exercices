@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.*;
+import java.util.GregorianCalendar;
 
 import java.time.Duration;
 import java.util.Random;
@@ -153,9 +154,20 @@ public class Examples {
     }
 
     private String generateBirthDate(){
+        GregorianCalendar gc = new GregorianCalendar();
+        int year = randBetween(1930, 2004);
+        gc.set(gc.YEAR, year);
+        int dayOfYear = randBetween(1, gc.getActualMaximum(gc.DAY_OF_YEAR));
+        gc.set(gc.DAY_OF_YEAR, dayOfYear);
 
-        return "20121999";
+        return String.valueOf((gc.get(gc.MONTH) + 1) + gc.get(gc.DAY_OF_MONTH) + gc.get(gc.YEAR));
+
     }
+
+    public static int randBetween(int start, int end) {
+        return start + (int)Math.round(Math.random() * (end - start));
+    }
+
     private String generatePassword(){
 
         return "Random1";
