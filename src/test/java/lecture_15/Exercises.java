@@ -12,7 +12,7 @@ import org.testng.annotations.Test;
 
 import java.time.Duration;
 
-public class Exercices {
+public class Exercises {
 
     private WebDriver driver;
 
@@ -150,7 +150,7 @@ public class Exercices {
     }
 
     @Test
-    public void testAlert() {
+    public void testPromptAlert() {
         driver.get("https://demoqa.com/alerts");
 
         WebElement promptBoxButton = driver.findElement(By.id("promptButton"));
