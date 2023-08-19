@@ -51,42 +51,33 @@ public class Examples {
     @Test(dataProvider = "generateUserData")
     public void testLogin(String userName, String password) {
 
-        //open the skillo test website
         driver.get("http://training.skillo-bg.com:4300/posts/all");
 
-        //open Login form
         WebElement loginLink = driver.findElement(By.id("nav-link-login"));
         loginLink.click();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.urlToBe("http://training.skillo-bg.com:4300/users/login"));
 
-        //verify the SignIn form
         WebElement signInElement = driver. findElement (By.xpath ( "//p[text()='Sign in']"));
         wait.until(ExpectedConditions.visibilityOf(signInElement));
 
-        //type username
         WebElement userNameField = driver.findElement(By.id("defaultLoginFormUsername"));
         userNameField.sendKeys(userName);
 
-        //type password
         WebElement passwordField = driver.findElement(By.id("defaultLoginFormPassword"));
         passwordField.sendKeys(password);
 
         WebElement signInButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("sign-in-button")));
         signInButton.click();
 
-        //verify home page url
         wait.until(ExpectedConditions.urlToBe("http://training.skillo-bg.com:4300/posts/all"));
 
-        //open Profile page
         WebElement profileLink = wait.until(ExpectedConditions.elementToBeClickable(By.id("nav-link-profile")));
         profileLink.click();
 
-        //verify profile URL
         wait.until(ExpectedConditions.urlContains("http://training.skillo-bg.com:4300/users/"));
 
-        //verify user name in profile
         Boolean isUserNameDisplayed = wait.until(ExpectedConditions.textToBe(By.tagName("h2"), userName));
         Assert.assertTrue(isUserNameDisplayed, "The user name is not displayed!");
     }
@@ -100,7 +91,6 @@ public class Examples {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.urlToBe("http://training.skillo-bg.com:4300/users/login"));
 
-        //verify the SignIn form
         WebElement signInElement = driver. findElement (By.xpath ( "//p[text()='Sign in']"));
         wait.until(ExpectedConditions.visibilityOf(signInElement));
 
