@@ -46,7 +46,7 @@ public class Examples {
     }
 
     @Test(dataProvider = "getUsers")
-    public void testLogin(String user, String password, String userName) {
+    public void testLogin(String user, String password) {
         HomePage homePage = new HomePage(driver);
         homePage.navigateTo();
 
@@ -70,6 +70,6 @@ public class Examples {
         Assert.assertTrue(profilePage.isUrlLoaded(), "The Profile URL is not correct!");
 
         String actualUsername = profilePage.getUsername();
-        Assert.assertEquals(actualUsername, userName, "The username is incorrect!");
+        Assert.assertEquals(actualUsername, user, "The username is incorrect!");
     }
 }

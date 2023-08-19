@@ -52,6 +52,6 @@ public class LoginPage {
 
     public void clickSignIn() {
         wait.until(ExpectedConditions.elementToBeClickable(signInButton));
-        signInButton.sendKeys();
+        signInButton.click();
     }
 }

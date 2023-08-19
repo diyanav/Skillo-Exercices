@@ -41,6 +41,6 @@ public class LoginPage {
 
     public void clickSignIn() {
         WebElement signInButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("sign-in-button")));
-        signInButton.sendKeys();
+        signInButton.click();
     }
 }
